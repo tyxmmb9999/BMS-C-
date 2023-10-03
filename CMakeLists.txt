@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 project(BMS)
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 add_executable(MainUI MainUI.cpp ReadUI.cpp)
+add_executable(test test.cpp)
