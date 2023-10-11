@@ -20,7 +20,7 @@ int main() {
         cout << "请再次确认您的身份！" << endl;
         cin.clear(); // 清除错误标志位
         cin.ignore(numeric_limits<streamsize>::max(), '\n'); // 清除缓冲区的无效输入
-        cin >> identification;
+        goto cinIdentification;
     }
     if (identification == 1) {
         ReadUI *readUI = new ReadUI();
@@ -31,7 +31,10 @@ int main() {
     }else if(identification==2){
         StaffUI *staffUI = new StaffUI();
         int staffReturn = staffUI->staff();
-        if(staffReturn==1){
+        if(staffReturn==1) {
+            goto cinIdentification;
+        }else if(staffReturn == 0){
+            cout<< "您因操作错误而退出！" << endl;
             goto cinIdentification;
         }
     }

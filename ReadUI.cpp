@@ -2,6 +2,7 @@
 #include <fstream>
 #include <regex>
 #include <mysql.h>
+#include <limits>
 #include "databaseContribute.h"
 
 
@@ -82,6 +83,17 @@ private:
         cout << "您已经进入读者业务界面，请选择您要进行的操作：1.借书 2.还书 3.查询 4.退出登录" << endl;
         int businessChoice;
         cin >> businessChoice;
+        int cinTry = 1;
+        while (businessChoice != 1 && businessChoice != 2 && businessChoice != 3 && businessChoice != 4) {
+            cin.clear(); // 清除错误标志位
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // 清除缓冲区的无效输入
+            cinTry++;
+            if(cinTry == 4){
+                return 1;
+            }
+            cout << "请再次确认您的操作！" << endl;
+            cin >> businessChoice;
+        }
         string borrowName;
         if (businessChoice == 1) {
             bookBorrow:
@@ -205,6 +217,8 @@ public:
         cin >> readerChoice;
         int cinTry = 1;
         while (readerChoice != 1 && readerChoice != 2 && readerChoice != 3) {
+            cin.clear(); // 清除错误标志位
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // 清除缓冲区的无效输入
             cinTry++;
             if(cinTry == 4){
                 cout << "您因操作错误返回！" << endl;
@@ -228,7 +242,7 @@ public:
                 cout << "您因重复输入多次退出！" << endl;
             curUser = "";
             goto cinChoice;
-        } else {
+        } else if(readerChoice == 3) {
             cout << "成功返回主界面！" << endl;
             return 1;
         }

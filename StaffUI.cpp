@@ -1,7 +1,6 @@
 #include <iostream>
-#include <fstream>
-#include <regex>
 #include <mysql.h>
+#include <limits>
 #include "databaseContribute.h"
 
 using namespace std;
@@ -14,14 +13,27 @@ private:
     string curUser = "";
     string curReader = "";
 
+    bool isValidInput(int input,int minValue, int maxValue){
+        return input >= minValue && input <= maxValue;
+    }
+
     int staffBusiness() {
 
         business:
         cout << "您已进入员工业务界面，请选择：1.借书 2.还书 3.查询 4.退出登录" << endl;
         int businessChoice;
-        int cinBusinessChoice = 0;
-        cinBusinessChoice:
         cin >> businessChoice;
+        int cinTry = 1;
+        while (businessChoice != 1 && businessChoice != 2 && businessChoice != 3 && businessChoice != 4) {
+            cin.clear(); // 清除错误标志位
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // 清除缓冲区的无效输入
+            cinTry++;
+            if(cinTry == 4){
+                return 1;
+            }
+            cout << "请再次确认您的操作！" << endl;
+            cin >> businessChoice;
+        }
         if (businessChoice == 1) {
             int cinAccount = 0;
             cinBorrowerAccount:
@@ -248,15 +260,11 @@ private:
             goto business;
         }else if (businessChoice == 4){
             return 0;
-        }
-        while(businessChoice!=1&&businessChoice!=2&&businessChoice!=3&&businessChoice!=4){
-            if(cinBusinessChoice == 3){
-                cout << "您因操作错误而返回！" << endl;
-                goto business;
-            }
-            cout << "请确认您的操作！";
-            cinBusinessChoice++;
-            goto cinBusinessChoice;
+        }else{
+            cin.clear(); // 清除错误标志位
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // 清除缓冲区的无效输入
+            cout << "请确认您的操作！" <<endl;
+            cin >> businessChoice;
         }
 
 
@@ -303,12 +311,26 @@ public:
         cinChoice:
         cout << "您已经进入员工页面，请选择：1.登录  2.返回主界面" << endl;
         cin >> staffChoice;
+        int cinTry = 1;
+        while (staffChoice != 1 && staffChoice != 2) {
+            cin.clear(); // 清除错误标志位
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // 清除缓冲区的无效输入
+            cinTry++;
+            if(cinTry == 4){
+                return 0;
+            }
+            cout << "请再次确认您的操作！" << endl;
+            cin >> staffChoice;
+        }
         if (staffChoice == 1) {
             if (signIn() == 0)
                 cout << "用户成功退出。" << endl;
             else
                 cout << "您因输入多次退出！" << endl;
             goto cinChoice;
+        }else if(staffChoice == 2){
+            cout << "正在返回主界面..." << endl;
+            return 1;
         }
     }
 
