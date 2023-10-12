@@ -120,7 +120,6 @@ private:
                 goto bookBorrow;
 
             } else {
-                mysql_free_result(res);
                 char query1[256];
                 snprintf(query1, sizeof(query1), "update book set status = %d , user_name = '%s' where name = '%s'", 1,
                          curUser.c_str(),
@@ -155,6 +154,15 @@ private:
                 goto business;
             }
         } else if (businessChoice == 3) {
+            char query9[256];
+            snprintf(query9, sizeof(query9), "select name from book where user_name = '%s'", curUser.c_str());
+            mysql_query(&conn, query9);
+            res = mysql_use_result(&conn);
+            if ((row = mysql_fetch_row(res)) == NULL) {
+                cout << "未查询到相关记录，正在返回..." << endl;
+                mysql_free_result(res);
+                goto business;
+            }
             mysql_free_result(res);
             cout << "用户:" << curUser << endl;
             cout << "借出的书为：";

@@ -13,10 +13,6 @@ private:
     string curUser = "";
     string curReader = "";
 
-    bool isValidInput(int input,int minValue, int maxValue){
-        return input >= minValue && input <= maxValue;
-    }
-
     int staffBusiness() {
 
         business:
@@ -54,27 +50,6 @@ private:
                 cout << "该用户不存在！" << endl;
                 mysql_free_result(res);
                 goto cinBorrowerAccount;
-            }
-            mysql_free_result(res);
-            int cinPassword = 0;
-            cinBorrowerPassword:
-            cinPassword++;
-            if(cinPassword == 4){
-                cout << "您因多次输入而退出！" << endl;
-                goto business;
-            }
-            cout << "请输入读者密码：";
-            string borrowerPassword;
-            cin >> borrowerPassword;
-            char query3[256];
-            snprintf(query3, sizeof(query3), "select * from user where account = '%s' and user_role = 1 and password = '%s'",
-                     borrowerAccount.c_str(),borrowerPassword.c_str());
-            mysql_query(&conn, query3);
-            res = mysql_use_result(&conn);
-            if ((row = mysql_fetch_row(res)) == NULL) {
-                cout << "读者密码错误！" << endl;
-                mysql_free_result(res);
-                goto cinBorrowerPassword;
             }
             mysql_free_result(res);
             curReader = borrowerAccount;
@@ -142,25 +117,6 @@ private:
                 goto cinReturnAccount;
             }
             mysql_free_result(res);
-            cinReturnPassword :
-            cinPassword++;
-            if(cinPassword == 4){
-                cout<<"您因输入错误次数太多而返回！"<<endl;
-                goto business;
-            }
-            cout << "请输入读者密码：" ;
-            string returnPassword;
-            cin >> returnPassword;
-            char query2[256];
-            snprintf(query2, sizeof(query2), "select * from user where account = '%s' and user_role = 1 and password = '%s'",
-                     returnAccount.c_str(),returnPassword.c_str());
-            mysql_query(&conn, query2);
-            res = mysql_use_result(&conn);
-            if ((row = mysql_fetch_row(res)) == NULL) {
-                cout << "读者密码错误！" << endl;
-                mysql_free_result(res);
-                goto cinReturnPassword;
-            }
             curReader = returnAccount;
             int cinBookName = 0;
             bookReturn:
@@ -172,7 +128,6 @@ private:
             cout << "请输入想要归还的书名：";
             string bookName;
             cin >> bookName;
-            mysql_free_result(res);
             char query0[256];
             snprintf(query0, sizeof(query0), "select * from book where name = '%s' ", bookName.c_str());
             mysql_query(&conn, query0);
@@ -246,6 +201,17 @@ private:
             }
             mysql_free_result(res);
             curReader = readerName;
+            char query7[256];
+            snprintf(query7, sizeof(query7), "select * from book where user_name = '%s'",
+                     readerName.c_str());
+            mysql_query(&conn, query7);
+            res = mysql_use_result(&conn);
+            if ((row = mysql_fetch_row(res)) == NULL) {
+                cout << "未查询到该用户的借书记录，正在返回..." << endl;
+                mysql_free_result(res);
+                goto business;
+            }
+            mysql_free_result(res);
             cout << "读者：" << curReader << "借出的书为：" << endl;
             char query6[256];
             snprintf(query6, sizeof(query6), "select name from book where user_name = '%s'", curReader.c_str());
