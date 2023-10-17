@@ -17,7 +17,6 @@ void connectMysql() {
 }
 
 
-
 int main() {
     // connectMysql();
     //
@@ -40,14 +39,14 @@ int main() {
     // char c = '1';
     // int i = (int) c;
     // cout << i;
-    int x=60,y=50,num=0;
-    for(int i = 1;i<=20;i++){
-        for(int j = 1;j <= 20;j++){
-            if(0.13*x*i+0.28*y*j <= 90){
-               num= max(num,j);
+    int x = 60, y = 50, num = 0;
+    for (int i = 1; i <= 20; i++) {
+        for (int j = 1; j <= 20; j++) {
+            if (0.13 * x * i + 0.28 * y * j <= 90) {
+                num = max(num, j);
             }
         }
-        cout<<"鸡蛋："<<i<<"鸡胸肉："<<num<<endl;
-        num=0;
+        cout << "鸡蛋：" << i << "鸡胸肉：" << num << endl;
+        num = 0;
     }
 }
