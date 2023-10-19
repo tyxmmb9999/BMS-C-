@@ -49,7 +49,7 @@ private:
             }
             string StaffAccount = StaffAccount1;
             char query1[256];
-            snprintf(query1, sizeof(query1), "select * from user where account = '%s' and user_role = 1",
+            snprintf(query1, sizeof(query1), "select * from user where account = '%s' and user_role = 2",
                      StaffAccount.c_str());
             mysql_query(&conn, query1);
             res = mysql_use_result(&conn);

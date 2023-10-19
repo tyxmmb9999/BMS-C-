@@ -63,9 +63,9 @@ private:
                 cout << "您输入的密码不符合规范，请重新输入！" << endl;
                 goto cinPwd;
             }
-            char query[256];
-            snprintf(query, sizeof(query), "insert into user values('%s', '%s');", account.c_str(), pwd1.c_str());
-            mysql_query(&conn, query);
+            char query1[256];
+            snprintf(query1, sizeof(query1), "insert into user values('%s', '%s',1);", account.c_str(), pwd1.c_str());
+            mysql_query(&conn, query1);
             cout << "注册成功,返回读者业务界面。" << endl;
             signUp = 0;
             return signUp;
